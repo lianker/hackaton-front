@@ -1,23 +1,26 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class SelectCustom extends Component {
-  render() {
-    return (
-      <div className="form-group col-md-4">
-        <label htmlFor={this.props.id}>{this.props.label}</label>
+const SelectCustom = ({
+  elementos,
+  id,
+  label,
+  inputClass,
+  divWrapperClass,
+  ...rest
+}) => (
+  <div className={divWrapperClass}>
+    <label htmlFor={id}>{label}</label>
+    <select className={inputClass} id={id} {...rest}>
+      <option value="">Selecione...</option>
+      {elementos.map(elemento => {
+        return (
+          <option key={elemento.id} value={elemento.nome}>
+            {elemento.nome}
+          </option>
+        );
+      })}
+    </select>
+  </div>
+);
 
-        <select className="form-control" {...this.props}>
-          <option value="">Selecione...</option>
-
-          {this.props.elementos.map(elemento => {
-            return (
-              <option key={elemento.id} value={elemento.nome}>
-                {elemento.nome}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-    );
-  }
-}
+export default SelectCustom;

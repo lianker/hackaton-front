@@ -1,10 +1,10 @@
 import React from "react";
 
-const Input = ({ divWrapperClass, id, label, inputClass, ...rest }) => (
+const DatePicker = ({ id, label, divWrapperClass, inputClass, ...rest }) => (
   <div className={divWrapperClass}>
     <label htmlFor={id}>{label}</label>
     <input className={inputClass} {...rest} />
   </div>
 );
 
-export default Input;
+export default DatePicker;

@@ -1,29 +1,16 @@
 import React, { Component } from "react";
-import InputCustom from "./components/InputCustom";
+import Input from "./components/InputCustom";
 import SelectCustom from "./components/SelectCustom";
 import BotaoSubmitCustom from "./components/BotaoSubmitCustom";
+import DatePicker from "./_common/DatePicker/DatePicker";
+import axios from "axios";
 
 export default class Lead extends Component {
   constructor() {
     super();
+
     this.state = {
-      tipoEmpresa: "",
-      razaoSocial: "",
-      nomeFantasia: "",
-      cnpj: "",
-      site: "",
-      telefone1: "",
-      telefone2: "",
-      mercado: "",
-      origem: "",
-      subOrigem: "",
-      endereco: "",
-      numero: "",
-      complemento: "",
-      cep: "",
-      estado: "",
-      cidade: "",
-      pais: ""
+      lead: {}
     };
 
     this.enviar = this.enviar.bind(this);
@@ -31,232 +18,143 @@ export default class Lead extends Component {
 
   salvaAlteracao(nomeInput, evento) {
     const campo = {};
-    campo[nomeInput] = evento.target.value;
+    let target = evento.target;
+    campo[nomeInput] =
+      target.type === "checkbox" ? target.checked : target.value;
     this.setState(campo);
   }
 
-  tiposEmpresa = [
-    { id: 0, nome: "Indústria" },
-    { id: 1, nome: "comércio e varejo" },
-    { id: 2, nome: "serviço terceirizado" },
-    { id: 3, nome: "autônomo" },
-    { id: 4, nome: "representação comercial" },
-    { id: 5, nome: "instituição financeira" }
+  origens = [
+    { id: 0, nome: "RD Summit" },
+    { id: 1, nome: "Facebook" },
+    { id: 2, nome: "Linkedin" },
+    { id: 3, nome: "Twitter" },
+    { id: 4, nome: "E-mail" },
+    { id: 5, nome: "Cold Call" }
   ];
-
-  mercados = [
-    { id: 0, nome: "Tecnologia" },
-    { id: 1, nome: "Engenharia" },
-    { id: 2, nome: "Prestação de serviços" },
-    { id: 3, nome: "Infra-Estrutura" },
-    { id: 4, nome: "Saúde" },
-    { id: 5, nome: "Educação" },
-    { id: 6, nome: "Varejo" }
-  ];
-
-  origens = [{ id: 0, nome: "Eventos" }, { id: 1, nome: "Rede-Social" }];
-  subOrigens = [{ id: 0, nome: "RD SUMIT" }, { id: 1, nome: "Facebook" }];
-  paises = [{ id: 0, nome: "Brasil" }];
 
   enviar(event) {
     event.preventDefault();
 
-    fetch("http://localhost:8080/api/autores", {
-      headers: { "Content-Type": "application/json" },
+    // "Acces-Control-Allow-Origin": "*",
+    const myApi = axios.create({
+      timeout: 10000,
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+
+    myApi({
       method: "post",
-      body: JSON.stringify(this.state)
+      url: "https://secret-ridge-86550.herokuapp.com/api/leads",
+      data: {
+        nome: this.state.leadNome,
+        sobrenome: this.state.leadSobrenome,
+        email: this.state.leadEmail,
+        nascimento: this.state.leadNascimento,
+        cargo: this.state.leadCargo,
+        origem: this.state.leadOrigem,
+        decisor: this.state.leadDecisor
+      }
     })
-      .then(res => res.json())
-      .then(res => {
-        // implementation
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
       });
   }
 
   render() {
     return (
       <div onSubmit={this.enviar} method="post">
+        <h5>Novo Lead</h5>
         <form>
-          <div className="panel panel-default">
-            <div className="panel-heading">Cadastro</div>
-            <div className="panel-body">
-              <div className="panel panel-default">
-                <div className="panel-heading">Dados da Empresa</div>
-                <div className="panel-body">
-                  <InputCustom
-                    label="Razão Social"
-                    type="text"
-                    id="razaoSocial"
-                    value={this.state.razaoSocial}
-                    className="form-control"
-                    placeholder="Razão Social"
-                    onChange={this.salvaAlteracao.bind(this, "razaoSocial")}
-                  />
-                  <InputCustom
-                    label="Nome Fantasa"
-                    type="text"
-                    id="nomeFantasia"
-                    value={this.state.nomeFantasia}
-                    className="form-control"
-                    placeholder="Coca-Cola"
-                    onChange={this.salvaAlteracao.bind(this, "nomeFantasia")}
-                  />
-                  <InputCustom
-                    label="CNPJ"
-                    type="text"
-                    id="cnpj"
-                    value={this.state.cnpj}
-                    className="form-control"
-                    placeholder="XXXXXXXXXXX"
-                    onChange={this.salvaAlteracao.bind(this, "cnpj")}
-                  />
+          <div className="row">
+            <Input
+              label="Nome"
+              type="text"
+              id="leadNome"
+              value={this.state.lead.nome}
+              divWrapperClass="six columns"
+              inputClass="u-full-width"
+              placeholder="Bruce"
+              onChange={this.salvaAlteracao.bind(this, "leadNome")}
+            />
 
-                  <InputCustom
-                    label="Site"
-                    type="text"
-                    id="site"
-                    value={this.state.site}
-                    className="form-control"
-                    placeholder="http://www.pqp.com.br"
-                    onChange={this.salvaAlteracao.bind(this, "site")}
-                  />
+            <Input
+              label="Sobrenome"
+              type="text"
+              id="leadSobrenome"
+              value={this.state.lead.sobrenome}
+              divWrapperClass="six columns"
+              inputClass="u-full-width"
+              placeholder="Wayne"
+              onChange={this.salvaAlteracao.bind(this, "leadSobrenome")}
+            />
+          </div>
 
-                  <InputCustom
-                    label="Telefone 01"
-                    type="text"
-                    id="telefone1"
-                    value={this.state.telefone1}
-                    className="form-control"
-                    placeholder="99 9999-9999"
-                    onChange={this.salvaAlteracao.bind(this, "telefone1")}
-                  />
+          <div className="row">
+            <Input
+              label="E-Mail"
+              type="email"
+              id="leadEmail"
+              value={this.state.lead.email}
+              divWrapperClass="six columns"
+              inputClass="u-full-width"
+              placeholder="batman@gothan.com"
+              onChange={this.salvaAlteracao.bind(this, "leadEmail")}
+            />
 
-                  <InputCustom
-                    label="Telefone 02"
-                    type="text"
-                    id="telefone2"
-                    value={this.state.telefone2}
-                    className="form-control"
-                    placeholder="99 9999-9999"
-                    onChange={this.salvaAlteracao.bind(this, "telefone2")}
-                  />
+            <Input
+              label="Cargo"
+              type="text"
+              id="leadCargo"
+              value={this.state.lead.cargo}
+              divWrapperClass="six columns"
+              inputClass="u-full-width"
+              placeholder="Herói"
+              onChange={this.salvaAlteracao.bind(this, "leadCargo")}
+            />
+          </div>
 
-                  <SelectCustom
-                    elementos={this.mercados}
-                    name="mercado"
-                    label="Mercado"
-                    id="mercado"
-                    value={this.state.mercado}
-                    onChange={this.salvaAlteracao.bind(this, "mercado")}
-                  />
+          <div className="row">
+            <DatePicker
+              label="Data de Nascimento"
+              type="date"
+              id="leadNascimento"
+              value={this.state.lead.dataNascimento}
+              divWrapperClass="six columns"
+              inputClass="u-full-width dtpicker"
+              placeholder="01/01/1987"
+              onChange={this.salvaAlteracao.bind(this, "leadNascimento")}
+            />
 
-                  <SelectCustom
-                    elementos={this.origens}
-                    name="origens"
-                    label="Origem"
-                    id="origem"
-                    value={this.state.origem}
-                    onChange={this.salvaAlteracao.bind(this, "origem")}
-                  />
+            <SelectCustom
+              elementos={this.origens}
+              name="leadOrigem"
+              label="Origem"
+              divWrapperClass="six columns"
+              inputClass="u-full-width"
+              id="leadOrigem"
+              value={this.state.lead.origem}
+              onChange={this.salvaAlteracao.bind(this, "leadOrigem")}
+            />
+          </div>
 
-                  <SelectCustom
-                    elementos={this.subOrigens}
-                    name="subOrigem"
-                    label="Sub-Origem"
-                    id="subOrigem"
-                    value={this.state.subOrigem}
-                    onChange={this.salvaAlteracao.bind(this, "subOrigem")}
-                  />
-
-                  <SelectCustom
-                    elementos={this.tiposEmpresa}
-                    name="tipoEmpresa"
-                    label="Tipo Empresa"
-                    id="tipoEmpresa"
-                    value={this.state.tipoEmpresa}
-                    onChange={this.salvaAlteracao.bind(this, "tipoEmpresa")}
-                  />
-
-                  <InputCustom
-                    label="Endereço"
-                    type="text"
-                    id="endereco"
-                    value={this.state.endereco}
-                    className="form-control"
-                    itemClass="form-group col-md-8"
-                    placeholder="Rua do inferno"
-                    onChange={this.salvaAlteracao.bind(this, "endereco")}
-                  />
-
-                  <InputCustom
-                    label="Número"
-                    type="text"
-                    id="numero"
-                    value={this.state.numero}
-                    className="form-control"
-                    placeholder="numero"
-                    onChange={this.salvaAlteracao.bind(this, "numero")}
-                  />
-
-                  <InputCustom
-                    label="Complemento"
-                    type="text"
-                    id="complemento"
-                    value={this.state.complemento}
-                    className="form-control"
-                    placeholder="Perto da casa do c**"
-                    onChange={this.salvaAlteracao.bind(this, "complemento")}
-                  />
-
-                  <InputCustom
-                    label="CEP"
-                    type="text"
-                    id="cep"
-                    value={this.state.cep}
-                    className="form-control"
-                    placeholder="88040-320"
-                    onChange={this.salvaAlteracao.bind(this, "cep")}
-                  />
-
-                  <InputCustom
-                    label="Estado"
-                    type="text"
-                    id="estado"
-                    value={this.state.estado}
-                    className="form-control"
-                    placeholder="Rio de Janeiro"
-                    onChange={this.salvaAlteracao.bind(this, "estado")}
-                  />
-
-                  <InputCustom
-                    label="Cidade"
-                    type="text"
-                    id="cidade"
-                    value={this.state.cidade}
-                    className="form-control"
-                    placeholder="Lodon"
-                    onChange={this.salvaAlteracao.bind(this, "cidade")}
-                  />
-
-                  <SelectCustom
-                    elementos={this.paises}
-                    name="pais"
-                    label="País"
-                    id="pais"
-                    value={this.state.pais}
-                    onChange={this.salvaAlteracao.bind(this, "pais")}
-                  />
-                </div>
-              </div>
-
-              <div className="panel panel-default">
-                <div className="panel-heading">Dados do Lead</div>
-                <div className="panel-body" />
-              </div>
-
-              <div className="panel panel-default">
-                <div className="panel-heading">Informações adicionais</div>
-                <div className="panel-body" />
-              </div>
+          <div className="row">
+            <div className="checkbox-align six columns">
+              <label>
+                <input
+                  type="checkbox"
+                  id="leadDecisor"
+                  name="leadDecisor"
+                  onChange={this.salvaAlteracao.bind(this, "leadDecisor")}
+                />
+                <span className="label-body">Decisor</span>
+              </label>
             </div>
           </div>
 
