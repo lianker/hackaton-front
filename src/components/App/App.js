@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Menu from "./components/Menu/Menu";
-import "./css/app.css";
-import "./css/datepicker.css";
+import Menu from "../Menu/Menu";
 
 class App extends Component {
   render() {

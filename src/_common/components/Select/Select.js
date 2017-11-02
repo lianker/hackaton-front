@@ -1,6 +1,6 @@
 import React from "react";
 
-const SelectCustom = ({
+const Select = ({
   elementos,
   id,
   label,
@@ -23,4 +23,4 @@ const SelectCustom = ({
   </div>
 );
 
-export default SelectCustom;
+export default Select;

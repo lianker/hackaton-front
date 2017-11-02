@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Input from "./components/InputCustom";
-import SelectCustom from "./components/SelectCustom";
-import BotaoSubmitCustom from "./components/BotaoSubmitCustom";
-import DatePicker from "./_common/DatePicker/DatePicker";
+import Input from "../../_common/components/Input/Input";
+import Select from "../../_common/components/Select/Select";
+import Button from "../../_common/components/Button/Button";
+import DatePicker from "../../_common/components/DatePicker/DatePicker";
 import axios from "axios";
 
 export default class Lead extends Component {
@@ -33,10 +33,10 @@ export default class Lead extends Component {
     { id: 5, nome: "Cold Call" }
   ];
 
+  // "Acces-Control-Allow-Origin": "*",
   enviar(event) {
     event.preventDefault();
 
-    // "Acces-Control-Allow-Origin": "*",
     const myApi = axios.create({
       timeout: 10000,
       withCredentials: true,
@@ -47,7 +47,7 @@ export default class Lead extends Component {
     });
 
     myApi({
-      method: "post",
+      method: "put",
       url: "https://secret-ridge-86550.herokuapp.com/api/leads",
       data: {
         nome: this.state.leadNome,
@@ -132,7 +132,7 @@ export default class Lead extends Component {
               onChange={this.salvaAlteracao.bind(this, "leadNascimento")}
             />
 
-            <SelectCustom
+            <Select
               elementos={this.origens}
               name="leadOrigem"
               label="Origem"
@@ -158,7 +158,7 @@ export default class Lead extends Component {
             </div>
           </div>
 
-          <BotaoSubmitCustom text="Gravar" />
+          <Button label="Gravar" />
         </form>
       </div>
     );
