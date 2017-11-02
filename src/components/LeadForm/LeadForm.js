@@ -3,11 +3,12 @@ import Input from "../../_common/components/Input/Input";
 import Select from "../../_common/components/Select/Select";
 import Button from "../../_common/components/Button/Button";
 import DatePicker from "../../_common/components/DatePicker/DatePicker";
+import Row from "../../_common/components/Row/Row";
 
 const LeadForm = ({ getFieldChanges, origens, enviar }) => (
   <div onSubmit={enviar} method="post">
     <form>
-      <div className="row">
+      <Row>
         <Input
           label="Nome"
           type="text"
@@ -27,9 +28,9 @@ const LeadForm = ({ getFieldChanges, origens, enviar }) => (
           placeholder="Wayne"
           onChange={e => getFieldChanges("leadSobrenome", e)}
         />
-      </div>
+      </Row>
 
-      <div className="row">
+      <Row>
         <Input
           label="E-Mail"
           type="email"
@@ -49,9 +50,9 @@ const LeadForm = ({ getFieldChanges, origens, enviar }) => (
           placeholder="Herói"
           onChange={e => getFieldChanges("leadCargo", e)}
         />
-      </div>
+      </Row>
 
-      <div className="row">
+      <Row>
         <DatePicker
           label="Data de Nascimento"
           type="date"
@@ -71,9 +72,9 @@ const LeadForm = ({ getFieldChanges, origens, enviar }) => (
           id="leadOrigem"
           onChange={e => getFieldChanges("leadOrigem", e)}
         />
-      </div>
+      </Row>
 
-      <div className="row">
+      <Row>
         <div className="checkbox-align six columns">
           <label>
             <input
@@ -85,7 +86,7 @@ const LeadForm = ({ getFieldChanges, origens, enviar }) => (
             <span className="label-body">Decisor</span>
           </label>
         </div>
-      </div>
+      </Row>
 
       <Button label="Gravar" />
     </form>
