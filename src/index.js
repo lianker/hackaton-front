@@ -6,14 +6,14 @@ import "./css/skeleton.css";
 import "./css/app.css";
 import "./css/datepicker.css";
 import App from "./components/App/App";
-import LeadForm from "./components/LeadForm/LeadForm";
+import NovoLead from "./containers/NovoLead/NovoLead";
 import Home from "./components/Home/Home";
 
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
-      <Route path="/leads" component={LeadForm} />
+      <Route path="/leads" component={NovoLead} />
     </Route>
   </Router>,
   document.getElementById("root")
