@@ -1,6 +1,6 @@
 import React from "react";
 import LeadForm from "../../components/LeadForm/LeadForm";
-import axios from "axios";
+import { enviaLead } from "../../services/leadService";
 
 export default class extends React.Component {
   constructor() {
@@ -19,38 +19,21 @@ export default class extends React.Component {
     this.setState(campo);
   };
 
-  enviar(event) {
+  enviar = event => {
     event.preventDefault();
 
-    const myApi = axios.create({
-      timeout: 10000,
-      withCredentials: true,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    });
+    const lead = {
+      nome: this.state.leadNome,
+      sobrenome: this.state.leadSobrenome,
+      email: this.state.leadEmail,
+      nascimento: this.state.leadNascimento,
+      cargo: this.state.leadCargo,
+      origem: this.state.leadOrigem,
+      decisor: this.state.leadDecisor
+    };
 
-    myApi({
-      method: "put",
-      url: "https://secret-ridge-86550.herokuapp.com/api/leads",
-      data: {
-        nome: this.state.leadNome,
-        sobrenome: this.state.leadSobrenome,
-        email: this.state.leadEmail,
-        nascimento: this.state.leadNascimento,
-        cargo: this.state.leadCargo,
-        origem: this.state.leadOrigem,
-        decisor: this.state.leadDecisor
-      }
-    })
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
+    enviaLead(lead);
+  };
 
   origens = [
     { id: 0, nome: "RD Summit" },
@@ -63,11 +46,15 @@ export default class extends React.Component {
 
   render() {
     return (
-      <LeadForm
-        origens={this.origens}
-        getFieldChanges={this.getFieldChanges}
-        enviar={this.enviar}
-      />
+      <div id="novo-lead">
+        <h5>Novo Lead</h5>
+
+        <LeadForm
+          origens={this.origens}
+          getFieldChanges={this.getFieldChanges}
+          enviar={this.enviar}
+        />
+      </div>
     );
   }
 }

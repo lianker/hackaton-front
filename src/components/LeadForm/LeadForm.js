@@ -6,7 +6,6 @@ import DatePicker from "../../_common/components/DatePicker/DatePicker";
 
 const LeadForm = ({ getFieldChanges, origens, enviar }) => (
   <div onSubmit={enviar} method="post">
-    <h5>Novo Lead</h5>
     <form>
       <div className="row">
         <Input
