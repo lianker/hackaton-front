@@ -1,5 +1,6 @@
 import React from "react";
 import LeadForm from "../../components/LeadForm/LeadForm";
+import OrganizacaoForm from "../../components/OrganizacaoForm/OrganizacaoForm";
 import { enviaLead } from "../../services/leadService";
 
 export default class extends React.Component {
@@ -44,16 +45,25 @@ export default class extends React.Component {
     { id: 5, nome: "Cold Call" }
   ];
 
+  mercados = [{ id: 0, nome: "Comércio e serviços" }];
+
   render() {
     return (
-      <div id="novo-lead">
-        <h5>Novo Lead</h5>
+      <div onSubmit={this.enviar} method="post">
+        <form>
+          <h5>Novo Lead</h5>
 
-        <LeadForm
-          origens={this.origens}
-          getFieldChanges={this.getFieldChanges}
-          enviar={this.enviar}
-        />
+          <LeadForm
+            origens={this.origens}
+            getFieldChanges={this.getFieldChanges}
+          />
+
+          <h5>Organizacao</h5>
+          <OrganizacaoForm
+            mercados={this.mercados}
+            getFieldChanges={this.getFieldChanges}
+          />
+        </form>
       </div>
     );
   }
